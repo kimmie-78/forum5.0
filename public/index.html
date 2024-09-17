@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Assuming alpine.js is your custom script -->
+    <script defer src="alpine.js"></script>
+
+    <link href="styles.css" rel="stylesheet"/>
+</head>
+<body x-data="forumApp()" x-init="init()">
+    <div class="container">
+        <template x-for="post in posts" :key="post.id">
+            <div class="post">
+                <h2 x-text="post.title"></h2>
+                <p x-text="post.name + ', ' + post.profession"></p>
+                <p x-text="post.description.split('. ')[0] + '.'"></p>
+                <button @click="toggleFullDescription(post.id)">Read more</button>
+                <a :href="post.link" target="_blank">Link</a>
+                <button :class="{ 'active': post.liked }" @click="likePost(post.id)" class="like-button">Like</button>
+                <button @click="toggleComments(post.id)">View Comments</button>
+
+                <div x-show="selectedPostId === post.id" class="comments-tab">
+                    <!-- Display 'No comments' if there are no comments for the post -->
+                    <template x-if="comments[post.id]?.length === 0">
+                        <div>
+                            <p>No comments yet!</p>
+                            <button @click="showCommentBox(post.id)">Add Comment</button>
+                        </div>
+                    </template>
+
+                    <!-- Add comment form -->
+                    <div x-show="showCommentBoxStatus[post.id]">
+                        <textarea x-model="newComment[post.id]" placeholder="Write your comment..."></textarea>
+                        <button @click="saveComment(post.id)">Save</button>
+                        <button @click="hideCommentBox(post.id)">Back</button>
+                    </div>
+
+                    <!-- Display existing comments -->
+                    <ul>
+                        <template x-for="comment in comments[post.id]" :key="comment.id">
+                            <li>
+                                <p x-text="comment.comment"></p>
+                                <button @click="deleteComment(post.id, comment.id)">Delete</button>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+        </template>
+    </div>
+</body>
+</html>
