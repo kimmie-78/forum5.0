@@ -36,7 +36,7 @@
     
     /* Button styling */
     button {
-    background-color: #007BFF;
+    background-color: rgb(100, 176, 169);;
     color: white;
     border: none;
     border-radius: 4px;
@@ -46,7 +46,7 @@
     }
     
     button:hover {
-    background-color: #0056b3;
+    background-color: rgb(100, 176, 169);;
     }
     
     /* Active like button styling */
@@ -133,6 +133,7 @@
     flex-grow: 1;
     margin: 0 20px;
     display: flex;
+    font-size: 15px;
   }
   .search-bar button {
     padding: 5px 10px;
@@ -212,7 +213,7 @@
     top: 35px;
     left: 25px;
     width: 20px;
-    height: 20px;
+    height: 12px;
     background: #fff;
     border-radius: 50%;
     filter: blur(2px);

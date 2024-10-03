@@ -37,7 +37,7 @@ function forumApp() {
                 this.comments[post.id] = await this.fetchComments(post.id);
                 this.showCommentBoxStatus[post.id] = false;
                 this.newComment[post.id] = '';
-                post.showFullDescription = false;  // Initialize showFullDescription status
+                post.showFullDescription = false; 
                 post.liked = false; 
                 this.updateTime(); 
              }
@@ -52,8 +52,18 @@ function forumApp() {
                 console.error('Error fetching posts:', error);
                 return [];
             }
+        },       
+        async fetchComments(postId) {
+            try {
+                const response = await fetch(`/api/comments/${postId}`);
+                if (!response.ok) throw new Error('Failed to fetch comments');
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+                return [];
+            }
         },
-
+        
         searchPosts() {
             if (this.searchTerm === '') {
                 return this.posts; // Return all posts if no search term
@@ -66,17 +76,6 @@ function forumApp() {
                 
                 return post.title.match(regex) || post.description.match(regex);
             });
-        },
-
-        async fetchComments(postId) {
-            try {
-                const response = await fetch(`/api/comments/${postId}`);
-                if (!response.ok) throw new Error('Failed to fetch comments');
-                return await response.json();
-            } catch (error) {
-                console.error('Error fetching comments:', error);
-                return [];
-            }
         },
 
         async likePost(postId) {
@@ -137,6 +136,7 @@ function forumApp() {
                 console.error('Error deleting comment:', error);
             }
         },
+
         async createPost() {
             try {
                 console.log("New post data: ", this.newPost);  // Log the form data
@@ -153,7 +153,7 @@ function forumApp() {
                     
                     if (newPost.title && newPost.name && newPost.profession) {
                         this.posts.push(newPost);  // Add new post to posts array
-                        this.newPost = { title: '', name: '', profession: '', description: '', link: '' };  // Clear form
+                        this.newPost = { title: '', name: '', profession: '', description: '', link: '' };  
                         this.showForm = false;  // Hide form after submission
                     } else {
                         console.error('API response does not contain expected fields');

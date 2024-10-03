@@ -22,20 +22,6 @@ const dbPromise = sqlite.open({
   // Run migrations
   await db.migrate();
 
-  // API to get posts with pagination
-  app.get('/api/posts', async (req, res) => {
-    const { page = 1, limit = 5 } = req.query;
-    const offset = (page - 1) * limit;
-
-    try {
-      const rows = await db.all('SELECT * FROM posts LIMIT ? OFFSET ?', [limit, offset]);
-      res.json(rows);
-    } catch (err) {
-      console.error('Error fetching posts:', err);
-      res.status(500).json({ error: 'Failed to retrieve posts' });
-    }
-  });
-
   // Get all comments for a post
   app.get('/api/comments/:postId', async (req, res) => {
     const { postId } = req.params;
@@ -104,4 +90,4 @@ app.post('/api/posts/new', async (req, res) => {
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
   });
-})();
+});
